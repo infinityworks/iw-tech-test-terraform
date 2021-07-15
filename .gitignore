@@ -1,0 +1,11 @@
+# ignores history if extention isinstalled
+.history
+
+# terraform 
+.terraform/
+.terraform.lock*
+.terraform.tfstate.lock.info*
+terraform.tfstate*
+
+# secrets
+*.pem
