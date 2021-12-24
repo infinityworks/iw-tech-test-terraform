@@ -10,7 +10,7 @@ FROM debian:10
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Terraform and tflint versions
-ARG TERRAFORM_VERSION=1.0.1
+ARG TERRAFORM_VERSION=1.1.2
 ARG TFLINT_VERSION=0.15.4
 
 # This Dockerfile adds a non-root user with sudo access. Use the "remoteUser"
@@ -129,3 +129,6 @@ RUN git secrets --register-aws --global \
 ENV DEBIAN_FRONTEND=dialog
 # Command line use of git needs an editor
 ENV EDITOR=code
+
+RUN mkdir --parent /workspaces/iw-tech-test-terraform-aws /home/vscode/.aws /home/vscode/.terraform.d/plugin-cache
+RUN chmod 777 --recursive /home/vscode/.terraform.d/plugin-cache

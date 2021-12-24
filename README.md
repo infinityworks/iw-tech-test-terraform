@@ -19,6 +19,18 @@ Install the extention `ms-vscode-remote.remote-containers`
 Reopen the unbalaced directory in the container
 wait... (approx 5 minutes) read the log
 
+## Docker Setup (Generic IDE)
+
+From the project folder execute `the run-docker'sh` script
+
+```shell
+./run-docker.sh
+```
+
+wait... (approx 5 minutes)
+
+The workspace is mounted in the directory `/workspaces/iw-tech-test-terraform-aws/`
+
 ## AWS credentails (ACloud Guru sandbox)
 
 > Setup aws config
