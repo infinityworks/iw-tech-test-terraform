@@ -92,7 +92,7 @@ RUN groupadd --gid $USER_GID $USERNAME \
 RUN echo "alias fd=fdfind" >> /home/${USERNAME}/.bashrc
     # Starship prompt
     #
-RUN curl -fsSL https://starship.rs/install.sh | bash -s -- --yes \
+RUN curl -fsSL https://starship.rs/install.sh | sh -s -- --yes \
     && echo 'eval "$(starship init bash)"' >> /home/$USERNAME/.bashrc \
     && echo 'source <(awless completion bash)' >> /home/$USERNAME/.bashrc
     # Ondir for environment switching
@@ -118,6 +118,8 @@ RUN apt-get autoremove -y \
     # Install BpyTop
     #
 RUN pip3 install bpytop
+    # Create a blank .aws directory
+RUN mkdir /home/${USERNAME}/.aws && chown ${USER_UID}:${USER_GID} /home/${USERNAME}/.aws
 
 COPY --chown=${USER_UID}:${USER_GID} .terraformrc .ondirrc /home/${USERNAME}/
 
