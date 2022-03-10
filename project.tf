@@ -75,13 +75,8 @@ data "aws_ami" "amazon_linux_2" {
   owners      = ["amazon"]
 
   filter {
-    name   = "root-device-type"
-    values = ["ebs"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
+    name   = "name"
+    values = ["amzn2-ami-hvm*"]
   }
 }
 
