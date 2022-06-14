@@ -45,18 +45,25 @@ RUN apt-get update \
     #
     # Install Docker CE CLI.
  RUN curl -fsSL https://download.docker.com/linux/$(lsb_release -is | tr '[:upper:]' '[:lower:]')/gpg | apt-key add - 2>/dev/null \
-    && add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/$(lsb_release -is | tr '[:upper:]' '[:lower:]') $(lsb_release -cs) stable" \
+    && add-apt-repository "deb [arch=$(dpkg --print-architecture)] https://download.docker.com/linux/$(lsb_release -is | tr '[:upper:]' '[:lower:]') $(lsb_release -cs) stable" \
     && apt-get update \
     && apt-get install -y docker-ce-cli
     #
     # Install the AWS CLI tools
 RUN mkdir -p /tmp/aws \
     && cd /tmp/aws \
-    && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+    && curl "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o "awscliv2.zip" \
     && unzip awscliv2.zip \
     && ./aws/install \
     && pip3 install git-remote-codecommit \
-    && pip3 install boto3
+    && pip3 install boto3 \
+    # Support `cidr.py`
+    && pip3 install tabulate \
+    # Session manager plugin for SSHing etc
+    # Determine the correct plugin for the CPU architecture https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html#install-plugin-debian
+    && [ "$(dpkg --print-architecture)" = "arm64" ] && arch="arm64" || arch="64bit" \
+    && curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_$arch/session-manager-plugin.deb" -o "/tmp/session-manager-plugin.deb" \
+    && dpkg -i /tmp/session-manager-plugin.deb
     # Support `cidr.py`
     #
 RUN pip3 install tabulate 
