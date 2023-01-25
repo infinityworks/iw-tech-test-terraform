@@ -2,6 +2,34 @@
 
 The task will be provided to you as part of the interview process.
 
+## Deploy details
+The first deployment needs to be done gradually due to [bug](https://github.com/hashicorp/terraform-provider-aws/issues/27386
+) in AWS provider (4.51.0 is also affected)
+To remove all resources with `terraform destroy`, run the commands in reverse order.
+
+```shell
+terraform apply \
+-target="aws_vpc.vpc" \
+-target="aws_subnet.subnet_1" \
+-target="aws_internet_gateway.internet_gateway" \
+-target="aws_route_table.rt" \
+-target="aws_route.route_to_gateway" \
+-target="aws_route_table_association.subnet_1" \
+-target="aws_security_group.allow_all" \
+-target="aws_security_group.allow_http" \
+-target="aws_lb.web-lb" \
+-target="aws_lb_listener.web-lb-listener" \
+-target="aws_lb_target_group.web-lb-group"
+
+terraform apply \
+-target="data.aws_subnet_ids.web_subnets" \
+-target="data.ws_instances.web_instances" \
+-target="aws_instance.web"
+
+terraform apply \
+-target="aws_lb_target_group_attachment.web-lb-group-attach"
+```
+
 ## DevContainer setup (VSCODE)
 
 Install the extention `ms-vscode-remote.remote-containers`
